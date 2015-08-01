@@ -1,1 +1,24 @@
+#!/usr/bin/python3
 __author__ = 'Kellan Childers'
+
+import curses
+
+
+def game(stdscr):
+    # Ensures a clean visual space.
+    stdscr.clear()
+    curses.curs_set(False)
+    # stdscr.nodelay(True)
+
+    # Sets the three main colors for the Conway graph.
+    curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_BLUE)
+    curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_WHITE)
+    curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_BLACK)
+    stdscr.bkgd(' ', curses.color_pair(2))
+    stdscr.refresh()
+
+    stdscr.getkey()
+
+if __name__ == "__main__":
+    # curses.wrapper ensures that program will always fully exit from curses mode if an error occurs.
+    curses.wrapper(game)
