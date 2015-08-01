@@ -2,6 +2,7 @@
 __author__ = 'Kellan Childers'
 
 import curses
+from recipe import Recipe
 
 
 def game(stdscr):
@@ -12,10 +13,15 @@ def game(stdscr):
 
     # Sets the three main colors for the Conway graph.
     curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_BLUE)
-    curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_WHITE)
+    curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_WHITE)
     curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_BLACK)
     stdscr.bkgd(' ', curses.color_pair(2))
     stdscr.refresh()
+
+    recipe = Recipe()
+    recipe.add_ingredient("onions", 2, "whole")
+    quantity, qualifier = recipe.get_ingredient_quantity("onions")
+    stdscr.addstr(0, 0, str(quantity) + ' ' + qualifier)
 
     stdscr.getkey()
 
