@@ -5,10 +5,19 @@ from json import dump, load
 
 
 class Recipe:
+    """Base class for making and containing recipes of ingredients."""
     def __init__(self):
+        """Initialize a blank recipe."""
         self._ingredients = {}
 
     def add_ingredient(self, name, quantity, qualifier):
+        """Add ingredient to the recipe, or update quantity of ingredient.
+
+        :param name: the name of the ingredient
+        :param quantity: the quantity of the ingredient
+        :param qualifier: the type of quantity of the ingredient (ounces, pounds, etx)
+        :return: a reference to the recipe
+        """
         try:
             current = self._ingredients[name]
             if current[1] == qualifier:
@@ -19,14 +28,22 @@ class Recipe:
         except KeyError:
             # If there isn't already an ingredient with this name, add it.
             self._ingredients[name] = (quantity, qualifier)
+        finally:
+            return self
 
     def get_ingredient_quantity(self, name):
+        """Get the quantity of an ingredient.
+
+        :param name: the name of the ingredient
+        :return: a tuple of the quantity and qualifier of the ingredient
+        """
         if self._ingredients[name]:
             return self._ingredients[name]
         else:
             raise ValueError("No ingredient by that name.")
 
     def show_ingredient(self, name):
+        """Get an ingredient and show it as a string."""
         return str(self.get_ingredient_quantity(name)[0]) + ' ' + \
             str(self.get_ingredient_quantity(name)[1] + ' ' + str(name))
 
