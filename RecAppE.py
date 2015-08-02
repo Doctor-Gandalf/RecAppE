@@ -18,11 +18,6 @@ def game(stdscr):
     stdscr.bkgd(' ', curses.color_pair(2))
     stdscr.refresh()
 
-    recipe = Recipe()
-    recipe.add_ingredient("onions", 2, "whole")
-    quantity, qualifier = recipe.get_ingredient_quantity("onions")
-    stdscr.addstr(0, 0, str(quantity) + ' ' + qualifier)
-
     stdscr.getkey()
 
 if __name__ == "__main__":
