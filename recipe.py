@@ -83,6 +83,10 @@ class Recipe:
         return self
 
     def copy(self):
+        """Create a copy of the recipe.
+
+        :return: an identical copy of the recipe
+        """
         new_recipe = Recipe()
         for ingredient in self._ingredients:
             quantity, quality = self.get_ingredient_quantity(ingredient)
@@ -111,4 +115,3 @@ if __name__ == "__main__":
     recipe.print()
     print("\nNew recipe:")
     recipe1.print()
-
