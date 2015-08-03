@@ -48,9 +48,9 @@ class Recipe:
         :param name: the name of the ingredient
         :return: a tuple of the quantity and qualifier of the ingredient
         """
-        if self._ingredients[name]:
+        try:
             return self._ingredients[name]
-        else:
+        except KeyError:
             raise ValueError("No ingredient by that name.")
 
     def show_ingredient(self, name):
@@ -128,11 +128,6 @@ if __name__ == "__main__":
     print("Adding shallots.")
     recipe.add_ingredient("shallots", 5, "chopped")
     print("There are {0} and {1}.\n".format(recipe.show_ingredient("onions"), recipe.show_ingredient("shallots")))
-    print("Attempting to add diced onions.\n")
-    try:
-        recipe.add_ingredient("onions", 3, "diced")
-    except ValueError as e:
-        print("Unable to add diced onions.\n")
     print("Copying recipe and clearing original\n")
     recipe1 = recipe.copy()
     recipe.clear()
