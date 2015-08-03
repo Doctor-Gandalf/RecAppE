@@ -81,11 +81,11 @@ class Recipe:
         :return: a reference to the recipe
         """
         if add_to:
-            with open(pth.join(pth.dirname(__file__), "saved_recipes", filename), "a") as write_file:
+            with open(pth.join(pth.dirname(__file__), "shopping_lists", filename), "a") as write_file:
                 for ingredient in self._ingredients:
                     write_file.write(self.show_ingredient(ingredient) + '\n')
         else:
-            with open(pth.join(pth.dirname(__file__), "saved_recipes", filename), "w") as write_file:
+            with open(pth.join(pth.dirname(__file__), "shopping_lists", filename), "w") as write_file:
                 for ingredient in self._ingredients:
                     write_file.write(self.show_ingredient(ingredient) + '\n')
         return self
@@ -130,3 +130,4 @@ if __name__ == "__main__":
     recipe.print_to_console()
     print("\nNew recipe:")
     recipe1.print_to_console()
+    recipe1.save_as_list("example_recipes/test.txt")
