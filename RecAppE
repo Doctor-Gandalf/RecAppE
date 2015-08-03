@@ -2,7 +2,6 @@
 __author__ = 'Kellan Childers'
 
 import curses
-from recipe import Recipe
 
 
 def game(stdscr):
