@@ -127,6 +127,6 @@ if __name__ == "__main__":
     recipe1 = recipe.copy()
     recipe.clear()
     print("Original recipe:")
-    recipe.print()
+    recipe.print_to_console()
     print("\nNew recipe:")
-    recipe1.print()
+    recipe1.print_to_console()
