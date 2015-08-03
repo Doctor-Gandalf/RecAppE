@@ -13,7 +13,7 @@ def game(stdscr):
 
     # Sets the three main colors for the Conway graph.
     # First color: text. Second color: background.
-    curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_BLUE)
+    curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLUE)
     curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_WHITE)
     curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_BLACK)
     stdscr.bkgd(' ', curses.color_pair(2))

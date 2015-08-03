@@ -12,15 +12,17 @@ class MainScreen:
                                                              self._list_height, self._list_width)
         self._shopping_list = Recipe()
         self._list_display = curses.newwin(self._list_height, self._list_width, display_start_y, display_start_x)
+        self._list_display.bkgd(' ', curses.color_pair(1))
+        util.color_box(self._list_display, 0, 0, self._list_height-1, self._list_width-1, 3)
 
     def add_recipe(self, filename):
         try:
             new_recipe = Recipe.create_from_file(filename)
             for ingredient, full_quantity in new_recipe.items():
                 self._shopping_list.add_ingredient(ingredient, full_quantity[0], full_quantity[1])
-            self._list_display.addstr(self._list_height-1, 0, "{} fully loaded".format(filename))
+            self._list_display.addstr(self._list_height-2, 1, "{} fully loaded".format(filename))
         except FileNotFoundError:
-            self._list_display.addstr(self._list_height-1, 0, "File not found.")
+            self._list_display.addstr(self._list_height-2, 1, "File not found.")
             self._list_display.refresh()
 
     def add_item(self, name, quantity, qualifier):
@@ -28,5 +30,5 @@ class MainScreen:
         return self._shopping_list
 
     def show_intro(self):
-        self._list_display.addstr(0, 0, "Welcome to RecAppE")
+        self._list_display.addstr(1, 1, "Welcome to RecAppE")
         self._list_display.refresh()

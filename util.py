@@ -19,6 +19,14 @@ def center_start(console_height, console_width, window_height, window_width):
 
 
 def size_lim(console_height, console_width, bound_height, bound_width):
+    """Limit the size of a window if the console is over a certain size.
+
+    :param console_height: the height of the window
+    :param console_width: the width of the window
+    :param bound_height: the minimum height to start binding the window
+    :param bound_width: the minimum width to start binding the window
+    :return: a pair of dimensions for the window
+    """
     y = console_height if console_height <= bound_height else floor(7*console_height/8)
     x = console_width if console_width <= bound_width else floor(7*console_width/8)
     return y, x
