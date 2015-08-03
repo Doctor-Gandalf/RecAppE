@@ -68,7 +68,7 @@ class Recipe:
             dump(self._ingredients, write_file)
         return self
 
-    def print(self):
+    def print_to_console(self):
         """Print all of recipe's ingredients."""
         for ingredient in self._ingredients:
             print(self.show_ingredient(ingredient))
