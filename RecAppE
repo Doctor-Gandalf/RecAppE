@@ -2,6 +2,7 @@
 __author__ = 'Kellan Childers'
 
 import curses
+from mainscreen import MainScreen
 
 
 def game(stdscr):
@@ -17,6 +18,11 @@ def game(stdscr):
     curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_BLACK)
     stdscr.bkgd(' ', curses.color_pair(2))
     stdscr.refresh()
+
+    console_height, console_width = stdscr.getmaxyx()
+
+    main_screen = MainScreen(console_height, console_width)
+    main_screen.show_intro()
 
     stdscr.getkey()
 

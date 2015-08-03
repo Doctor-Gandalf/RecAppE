@@ -11,6 +11,11 @@ class Recipe:
         """Initialize a blank recipe."""
         self._ingredients = {}
 
+    @staticmethod
+    def create_from_file(filename):
+        new_recipe = Recipe()
+        return new_recipe.read_from_file(filename)
+
     def add_ingredient(self, name, quantity, qualifier):
         """Add ingredient to the recipe, or update quantity of ingredient.
 
