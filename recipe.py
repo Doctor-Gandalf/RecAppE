@@ -130,4 +130,3 @@ if __name__ == "__main__":
     recipe.print_to_console()
     print("\nNew recipe:")
     recipe1.print_to_console()
-    recipe1.save_as_list("example_recipes/test.txt")
