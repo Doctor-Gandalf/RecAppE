@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 __author__ = 'Kellan Childers'
 
+import os
 from json import dump, load
 
 
@@ -53,7 +54,7 @@ class Recipe:
         :param filename: the name of the file to be read
         :return: a reference to the recipe
         """
-        with open(filename, "r") as read_file:
+        with open(os.path.join(os.path.dirname(__file__), "saved_recipes", filename), "r") as read_file:
             self._ingredients = load(read_file)
         return self
 
@@ -63,9 +64,30 @@ class Recipe:
         :param filename: the name of the file to be written to (will lose all old data)
         :return: a reference to the recipe
         """
-        with open(filename, "w") as write_file:
+        with open(os.path.join(os.path.dirname(__file__), "saved_recipes", filename), "w") as write_file:
+
             dump(self._ingredients, write_file)
         return self
+
+    def print(self):
+        """Print all of recipe's ingredients."""
+        for ingredient in self._ingredients:
+            print(self.show_ingredient(ingredient))
+
+    def clear(self):
+        """Remove all ingredients from the recipe.
+
+        :return: a reference to self
+        """
+        self._ingredients = {}
+        return self
+
+    def copy(self):
+        new_recipe = Recipe()
+        for ingredient in self._ingredients:
+            quantity, quality = self.get_ingredient_quantity(ingredient)
+            new_recipe.add_ingredient(ingredient, quantity, quality)
+        return new_recipe
 
 if __name__ == "__main__":
     print("Demonstrating recipe.py\n")
@@ -77,8 +99,16 @@ if __name__ == "__main__":
     print("Adding shallots.")
     recipe.add_ingredient("shallots", 5, "chopped")
     print("There are {0} and {1}.\n".format(recipe.show_ingredient("onions"), recipe.show_ingredient("shallots")))
-    print("Attempting to add diced onions.")
+    print("Attempting to add diced onions.\n")
     try:
         recipe.add_ingredient("onions", 3, "diced")
     except ValueError as e:
-        print(e.args[0])
+        print("Unable to add diced onions.\n")
+    print("Copying recipe and clearing original\n")
+    recipe1 = recipe.copy()
+    recipe.clear()
+    print("Original recipe:")
+    recipe.print()
+    print("\nNew recipe:")
+    recipe1.print()
+
