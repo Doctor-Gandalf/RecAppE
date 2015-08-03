@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 __author__ = 'Kellan Childers'
 
-import os
+import os.path as pth
 from json import dump, load
 
 
@@ -54,7 +54,7 @@ class Recipe:
         :param filename: the name of the file to be read
         :return: a reference to the recipe
         """
-        with open(os.path.join(os.path.dirname(__file__), "saved_recipes", filename), "r") as read_file:
+        with open(pth.join(pth.dirname(__file__), "saved_recipes", filename), "r") as read_file:
             self._ingredients = load(read_file)
         return self
 
@@ -64,8 +64,7 @@ class Recipe:
         :param filename: the name of the file to be written to (will lose all old data)
         :return: a reference to the recipe
         """
-        with open(os.path.join(os.path.dirname(__file__), "saved_recipes", filename), "w") as write_file:
-
+        with open(pth.join(pth.dirname(__file__), "saved_recipes", filename), "w") as write_file:
             dump(self._ingredients, write_file)
         return self
 
@@ -73,6 +72,23 @@ class Recipe:
         """Print all of recipe's ingredients."""
         for ingredient in self._ingredients:
             print(self.show_ingredient(ingredient))
+
+    def save_as_list(self, filename, add_to=False):
+        """Save the recipe as a human-readable list of ingredients.
+
+        :param add_to: a boolean value determining if the file should be appended to (true)
+         or rewritten (false, default)
+        :return: a reference to the recipe
+        """
+        if add_to:
+            with open(pth.join(pth.dirname(__file__), "saved_recipes", filename), "a") as write_file:
+                for ingredient in self._ingredients:
+                    write_file.write(self.show_ingredient(ingredient) + '\n')
+        else:
+            with open(pth.join(pth.dirname(__file__), "saved_recipes", filename), "w") as write_file:
+                for ingredient in self._ingredients:
+                    write_file.write(self.show_ingredient(ingredient) + '\n')
+        return self
 
     def clear(self):
         """Remove all ingredients from the recipe.
@@ -88,9 +104,8 @@ class Recipe:
         :return: an identical copy of the recipe
         """
         new_recipe = Recipe()
-        for ingredient in self._ingredients:
-            quantity, quality = self.get_ingredient_quantity(ingredient)
-            new_recipe.add_ingredient(ingredient, quantity, quality)
+        for ingredient, full_quantity in self._ingredients.items():
+            new_recipe.add_ingredient(ingredient, full_quantity[0], full_quantity[1])
         return new_recipe
 
 if __name__ == "__main__":
