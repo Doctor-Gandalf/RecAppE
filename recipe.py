@@ -13,6 +13,11 @@ class Recipe:
 
     @staticmethod
     def create_from_file(filename):
+        """Create a recipe using a previously-created file.
+
+        :param filename: the name of the file to load
+        :return: a new recipe read from the file
+        """
         new_recipe = Recipe()
         return new_recipe.read_from_file(filename)
 
