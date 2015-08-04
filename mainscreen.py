@@ -43,7 +43,7 @@ class MainScreen:
         try:
             new_recipe = Recipe.create_from_file(filename)
             # Add every ingredient in recipe to the shopping list.
-            for ingredient, full_quantity in new_recipe.items():
+            for ingredient, full_quantity in new_recipe._ingredients.items():
                 self._shopping_list.add_ingredient(ingredient, full_quantity[0], full_quantity[1])
 
             # Alert user that list was updated.
@@ -82,6 +82,27 @@ class MainScreen:
 
         return self
 
+    def load_list(self, filename):
+        """Loads a list from a file.
+
+        :param filename: the name of the file to read
+        :return: null
+        """
+        filename = 'shopping_lists/data/' + filename
+
+        # Handle error in case file doesn't exist.
+        new_list = Recipe.create_from_file(filename)
+        # Add every ingredient in recipe to the shopping list.
+        for ingredient, full_quantity in new_list._ingredients.items():
+            self._shopping_list.add_ingredient(ingredient, full_quantity[0], full_quantity[1])
+
+        # Alert user that list was updated (function will have thrown
+        # a FileNotFoundError or IsADirectoryError by now if not updated).
+        line_y, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, len(filename)+13)
+        self._list_display.addstr(line_y+5, line_x, "{} fully loaded".format(filename))
+
+        self._list_display.refresh()
+
     def show_intro(self):
         """Show welcome text."""
         # Calling util.center_start using the length of the string will center the string.
@@ -101,18 +122,44 @@ class MainScreen:
         self._list_display.refresh()
 
     def start_command(self):
+        """Start the main screen by getting a command from a key.
+
+        Pressing 'q' will quit app.
+        :return: a reference to the recipe
+        """
         key = self._list_display.getkey()
         if key == '\n':
             # Shopping list is already empty so program can continue
-            return
+            return self
         elif key == 'l':
             # Load a shopping list from saves.
-            pass
+
+            # Request filename.
+            line_y, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, 16)
+            self._list_display.addstr(line_y+4, 1, ' '*(self._list_width-2))
+            self._list_display.addstr(line_y+4, line_x, "Enter filename: ")
+
+            # Get filename
+            curses.echo()
+            filename = self._list_display.getstr().decode(encoding="utf-8")
+            curses.noecho()
+
+            # Try to load list, and recursively call start_command if the file isn't loaded.
+            try:
+                self.load_list(filename)
+            except (FileNotFoundError, IsADirectoryError):
+                # Alert user that file was not found.
+                line_y, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, 13)
+                self._list_display.addstr(line_y+5, line_x, "File not found.")
+                self._list_display.refresh()
+                self.start_command()
+
+            return self
         elif key == 'q':
             # quit app.
             exit()
         else:
-            # Use same method for centering text as show_intro(), add text below show_intro()'s.
+            # Use same method for centering text as show_intro(); add text below show_intro()'s.
             line_y, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, 28)
             self._list_display.addstr(line_y+4, line_x, "Command not found, try again")
 
