@@ -21,6 +21,9 @@ class Recipe:
         new_recipe = Recipe()
         return new_recipe.read_from_file(filename)
 
+    def __iter__(self):
+        return iter(self._ingredients)
+
     def add_ingredient(self, name, quantity, qualifier):
         """Add ingredient to the recipe, or update quantity of ingredient.
 
