@@ -221,11 +221,18 @@ class MainScreen:
         _, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, 14)
         self._list_display.addstr(1, line_x, "Shopping list:")
 
-        for ingredient in self._shopping_list:
+        for ingredient in sorted(self._shopping_list):
             start_y = count
             start_x = row*20+1
 
-            self._list_display.addstr(start_y, start_x, self._shopping_list.show_ingredient(ingredient))
+            full_ingredient = self._shopping_list.show_ingredient(ingredient)
+            truncated_ingredient = full_ingredient[:18] + (full_ingredient[18:] and '..')
+
+            try:
+                self._list_display.addstr(start_y, start_x, truncated_ingredient)
+            except curses.error:
+                # Window has run out of room, so stop printing.
+                break
             count += 1
 
             if count == self._list_height-2:
