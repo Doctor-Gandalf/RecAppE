@@ -20,8 +20,8 @@ def game(stdscr):
     stdscr.refresh()
 
     console_height, console_width = stdscr.getmaxyx()
-    _, title_x = center_start(console_height, console_width, 1, 7)
-    stdscr.addstr(0, title_x, "RecAppE", curses.A_BOLD | curses.A_UNDERLINE)
+    _, title_x = center_start(console_height, console_width, 1, 26)
+    stdscr.addstr(0, title_x, "RecAppE by Kellan Childers", curses.A_BOLD | curses.A_UNDERLINE)
 
     main_screen = MainScreen(console_height, console_width)
     main_screen.show_intro()
