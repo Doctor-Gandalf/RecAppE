@@ -39,11 +39,13 @@ class Recipe:
                 self._ingredients[name] = (new_quantity, qualifier)
             else:
                 raise ValueError("Attempting to add two different quantities failed.")
+            return self
         except KeyError:
             # If there isn't already an ingredient with this name, add it.
             self._ingredients[name] = (quantity, qualifier)
-        finally:
             return self
+        except ValueError as e:
+            raise e
 
     def get_ingredient_quantity(self, name):
         """Get the quantity of an ingredient.
