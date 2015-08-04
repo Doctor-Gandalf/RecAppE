@@ -16,6 +16,7 @@ class MainScreen:
         util.color_box(self._list_display, 0, 0, self._list_height-1, self._list_width-1, 3)
 
     def add_recipe(self, filename):
+        filename = 'saved_recipes/' + filename
         try:
             new_recipe = Recipe.create_from_file(filename)
             for ingredient, full_quantity in new_recipe.items():
@@ -28,6 +29,12 @@ class MainScreen:
     def add_item(self, name, quantity, qualifier):
         self._shopping_list.add_ingredient(name, quantity, qualifier)
         return self._shopping_list
+
+    def save_list(self, filename):
+        data_name = 'shopping_lists/data/' + filename
+        filename = 'shopping_lists/' + filename
+        self._shopping_list.save_as_list(filename)
+        self._shopping_list.save_to_file(data_name)
 
     def show_intro(self):
         """Show welcome text."""

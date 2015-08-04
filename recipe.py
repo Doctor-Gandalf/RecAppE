@@ -64,7 +64,7 @@ class Recipe:
         :param filename: the name of the file to be read
         :return: a reference to the recipe
         """
-        with open(pth.join(pth.dirname(__file__), "saved_recipes", filename), "r") as read_file:
+        with open(pth.join(pth.dirname(__file__), filename), "r") as read_file:
             self._ingredients = load(read_file)
         return self
 
@@ -74,7 +74,7 @@ class Recipe:
         :param filename: the name of the file to be written to (will lose all old data)
         :return: a reference to the recipe
         """
-        with open(pth.join(pth.dirname(__file__), "saved_recipes", filename), "w") as write_file:
+        with open(pth.join(pth.dirname(__file__), filename), "w") as write_file:
             dump(self._ingredients, write_file)
         return self
 
@@ -91,11 +91,11 @@ class Recipe:
         :return: a reference to the recipe
         """
         if add_to:
-            with open(pth.join(pth.dirname(__file__), "shopping_lists", filename), "a") as write_file:
+            with open(pth.join(pth.dirname(__file__), filename), "a") as write_file:
                 for ingredient in self._ingredients:
                     write_file.write(self.show_ingredient(ingredient) + '\n')
         else:
-            with open(pth.join(pth.dirname(__file__), "shopping_lists", filename), "w") as write_file:
+            with open(pth.join(pth.dirname(__file__), filename), "w") as write_file:
                 for ingredient in self._ingredients:
                     write_file.write(self.show_ingredient(ingredient) + '\n')
         return self
