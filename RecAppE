@@ -6,7 +6,7 @@ from mainscreen import MainScreen
 from util import center_start
 
 
-def game(stdscr):
+def app(stdscr):
     # Ensures a clean visual space.
     stdscr.clear()
     curses.curs_set(False)
@@ -32,4 +32,4 @@ def game(stdscr):
 
 if __name__ == "__main__":
     # curses.wrapper ensures that program will always fully exit from curses mode if an error occurs.
-    curses.wrapper(game)
+    curses.wrapper(app)
