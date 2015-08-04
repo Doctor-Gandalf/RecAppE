@@ -237,7 +237,8 @@ class MainScreen:
 
         if key == 'l':
             # Load a recipe.
-            pass
+            filename = self.request_element("Enter name of recipe to load: ")
+            self.add_recipe(filename)
         elif key == 'a':
             # Add an ingredient.
             try:
