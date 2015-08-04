@@ -30,5 +30,18 @@ class MainScreen:
         return self._shopping_list
 
     def show_intro(self):
-        self._list_display.addstr(1, 1, "Welcome to RecAppE")
+        """Show welcome text."""
+        # Calling util.center_start using the length of the string will center the string.
+        line_1_y, line_1_x = util.center_start(self._list_height-2, self._list_width-2, 1, 18)
+        self._list_display.addstr(line_1_y, line_1_x, "Welcome to RecAppE")
+
+        line_2_y, line_2_x = util.center_start(self._list_height-2, self._list_width-2, 1, 42)
+        self._list_display.addstr(line_2_y+1, line_2_x, "To create a new shopping list, press enter")
+
+        line_3_y, line_3_x = util.center_start(self._list_height-2, self._list_width-2, 1, 52)
+        self._list_display.addstr(line_3_y+2, line_3_x, "To add to a previously made shopping list, press 'l'")
+
+        line_4_y, line_4_x = util.center_start(self._list_height-2, self._list_width-2, 1, 30)
+        self._list_display.addstr(line_4_y+3, line_4_x, "To quit, press 'q' at any time")
+
         self._list_display.refresh()
