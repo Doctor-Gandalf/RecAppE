@@ -25,7 +25,9 @@ def app(stdscr):
     stdscr.refresh()
 
     main_screen = MainScreen(console_height, console_width)
+    main_screen.show_intro()
     main_screen.start_shopping_list()
+    main_screen.clear_screen()
 
     stdscr.getkey()
 

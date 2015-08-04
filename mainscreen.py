@@ -141,7 +141,6 @@ class MainScreen:
         Pressing 'q' will quit app.
         :return: a reference to the recipe
         """
-        self.show_intro()
         key = self._list_display.getkey()
         if key == '\n':
             # Shopping list is already empty so program can continue
@@ -160,3 +159,14 @@ class MainScreen:
 
             self._list_display.refresh()
             self.start_shopping_list()
+
+    def clear_screen(self):
+        """Clear the contents of the screen."""
+        self._list_display.clear()
+        util.color_box(self._list_display, 0, 0, self._list_height-1, self._list_width-1, 3)
+        self._list_display.refresh()
+        return self
+
+    def show_list(self):
+
+        pass
