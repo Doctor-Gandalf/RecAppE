@@ -215,29 +215,37 @@ class MainScreen:
         return self
 
     def show_list(self):
-        count = 2
-        row = 0
+        """Display the shopping list on screen."""
+        # Format the rows and columns the chart.
+        row = 2
+        column = 0
 
+        # Set up chart header.
         _, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, 14)
         self._list_display.addstr(1, line_x, "Shopping list:")
 
         for ingredient in sorted(self._shopping_list):
-            start_y = count
-            start_x = row*20+1
+            # Format where to place each element in chart.
+            start_y = row
+            start_x = column*20+1
 
+            # Truncate ingredient if longer than 18 characters.
             full_ingredient = self._shopping_list.show_ingredient(ingredient)
             truncated_ingredient = full_ingredient[:18] + (full_ingredient[18:] and '..')
 
+            # Keep printing until list runs out of space.
             try:
                 self._list_display.addstr(start_y, start_x, truncated_ingredient)
             except curses.error:
                 # Window has run out of room, so stop printing.
                 break
-            count += 1
 
-            if count == self._list_height-2:
-                row += 1
-                count = 2
+            row += 1
+
+            # Every column, restart row number.
+            if row == self._list_height-2:
+                column += 1
+                row = 2
 
         self._list_display.refresh()
 
