@@ -10,7 +10,6 @@ def game(stdscr):
     # Ensures a clean visual space.
     stdscr.clear()
     curses.curs_set(False)
-    # stdscr.nodelay(True)
 
     # Sets the three main colors for the Conway graph.
     # First color: text. Second color: background.
