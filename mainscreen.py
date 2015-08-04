@@ -64,44 +64,36 @@ class MainScreen:
         self._shopping_list.add_ingredient(name, quantity, qualifier)
         return self
 
+    def request_element(self, request):
+        """Ask for an element.
+
+        :param request: the request for the element (requires string)
+        :return: the user's response
+        """
+        # Clear row in preparation of getting element.
+        self._list_display.addstr(self._list_height-2, 1, ' '*(self._list_width-2))
+
+        # Format request, then request.
+        _, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, len(request))
+        self._list_display.addstr(self._list_height-2, line_x, request)
+        self._list_display.refresh()
+
+        # Get element.
+        curses.echo()
+        element = self._list_display.getstr().decode(encoding="utf-8")
+        curses.noecho()
+
+        return element
+
     def get_item_info(self):
         """Get the info for an item to add
 
         :return: a tuple composed of the name, the quantity, and the qualifier (in order)
         """
-        curses.echo()
 
-        # Request item name.
-        _, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, 20)
-        self._list_display.addstr(self._list_height-2, line_x, "Enter name of item: ")
-        self._list_display.refresh()
-
-        # Get item name.
-        item_name = self._list_display.getstr().decode(encoding="utf-8")
-
-        # Clear screen after item name.
-        self._list_display.addstr(self._list_height-2, 1, ' '*(self._list_width-2))
-
-        # Request item quantity.
-        _, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, 25)
-        self._list_display.addstr(self._list_height-2, line_x, "Enter quantity of item: ")
-        self._list_display.refresh()
-
-        # Get item qualifier.
-        item_quantity = int(self._list_display.getstr().decode(encoding="utf-8"))
-
-        # Clear screen after item quantity.
-        self._list_display.addstr(self._list_height-2, 1, ' '*(self._list_width-2))
-
-        # Request item qualifier.
-        _, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, 26)
-        self._list_display.addstr(self._list_height-2, line_x, "Enter qualifier of item: ")
-        self._list_display.refresh()
-
-        # Get item qualifier.
-        item_qualifier = self._list_display.getstr().decode(encoding="utf-8")
-
-        curses.noecho()
+        item_name = self.request_element("Enter name of item: ")
+        item_quantity = self.request_element("Enter quantity of item: ")
+        item_qualifier = self.request_element("Enter qualifier of item: ")
 
         return item_name, item_quantity, item_qualifier
 
