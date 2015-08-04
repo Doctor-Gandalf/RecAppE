@@ -115,7 +115,7 @@ class MainScreen:
             self._list_display.refresh()
 
             # Retry getting a command
-            self.start_command()
+            self.start_shopping_list()
 
     def show_intro(self):
         """Show welcome text."""
@@ -135,12 +135,13 @@ class MainScreen:
 
         self._list_display.refresh()
 
-    def start_command(self):
+    def start_shopping_list(self):
         """Start the main screen by getting a command from a key.
 
         Pressing 'q' will quit app.
         :return: a reference to the recipe
         """
+        self.show_intro()
         key = self._list_display.getkey()
         if key == '\n':
             # Shopping list is already empty so program can continue
@@ -158,4 +159,4 @@ class MainScreen:
             self._list_display.addstr(line_y+4, line_x, "Command not found, try again")
 
             self._list_display.refresh()
-            self.start_command()
+            self.start_shopping_list()
