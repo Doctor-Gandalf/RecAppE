@@ -85,18 +85,6 @@ class MainScreen:
 
         return element
 
-    def get_item_info(self):
-        """Get the info for an item to add
-
-        :return: a tuple composed of the name, the quantity, and the qualifier (in order)
-        """
-
-        item_name = self.request_element("Enter name of item: ")
-        item_quantity = self.request_element("Enter quantity of item: ")
-        item_qualifier = self.request_element("Enter qualifier of item: ")
-
-        return item_name, item_quantity, item_qualifier
-
     def save_list(self, filename):
         """Save a copy of the shopping list for both user and computer use.
 
@@ -253,7 +241,10 @@ class MainScreen:
         elif key == 'a':
             # Add an ingredient.
             try:
-                item_name, item_quantity, item_qualifier = self.get_item_info()
+                item_name = self.request_element("Enter name of item: ")
+                item_quantity = int(self.request_element("Enter quantity of item: "))
+                item_qualifier = self.request_element("Enter qualifier of item: ")
+
                 self.add_item(item_name, item_quantity, item_qualifier)
             except ValueError:
                 self._list_display.addstr(self._list_height-2, 1, ' '*(self._list_width-2))
