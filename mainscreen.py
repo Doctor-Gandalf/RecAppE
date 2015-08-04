@@ -99,3 +99,22 @@ class MainScreen:
         self._list_display.addstr(line_4_y+3, line_4_x, "To quit, press 'q' at any time")
 
         self._list_display.refresh()
+
+    def start_command(self):
+        key = self._list_display.getkey()
+        if key == '\n':
+            # Shopping list is already empty so program can continue
+            return
+        elif key == 'l':
+            # Load a shopping list from saves.
+            pass
+        elif key == 'q':
+            # quit app.
+            exit()
+        else:
+            # Use same method for centering text as show_intro(), add text below show_intro()'s.
+            line_y, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, 28)
+            self._list_display.addstr(line_y+4, line_x, "Command not found, try again")
+
+            self._list_display.refresh()
+            self.start_command()

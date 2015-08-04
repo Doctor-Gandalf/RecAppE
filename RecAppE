@@ -17,14 +17,16 @@ def game(stdscr):
     curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_WHITE)
     curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_BLACK)
     stdscr.bkgd(' ', curses.color_pair(2))
-    stdscr.refresh()
 
     console_height, console_width = stdscr.getmaxyx()
     _, title_x = center_start(console_height, console_width, 1, 26)
     stdscr.addstr(0, title_x, "RecAppE by Kellan Childers", curses.A_BOLD | curses.A_UNDERLINE)
 
+    stdscr.refresh()
+
     main_screen = MainScreen(console_height, console_width)
     main_screen.show_intro()
+    main_screen.start_command()
 
     stdscr.getkey()
 
