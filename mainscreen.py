@@ -241,8 +241,10 @@ class MainScreen:
         self._list_display.refresh()
 
         if key == 'l':
+            # Load a recipe.
             pass
         elif key == 'a':
+            # Add an ingredient.
             try:
                 item_name, item_quantity, item_qualifier = self.get_item_info()
                 self.add_item(item_name, item_quantity, item_qualifier)
@@ -253,8 +255,13 @@ class MainScreen:
                 self._list_display.refresh()
                 self.do_command()
         elif key == 'q':
+            # Quit app.
             exit()
         elif key == 's':
+            # Save shopping list.
+            pass
+        elif key == 'r':
+            # Remove item.
             pass
         else:
             _, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, 18)
