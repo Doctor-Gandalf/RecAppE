@@ -42,9 +42,8 @@ class MainScreen:
         # Handle error in case file doesn't exist.
         try:
             new_recipe = Recipe.create_from_file(filename)
-            # Add every ingredient in recipe to the shopping list.
-            for ingredient, full_quantity in new_recipe._ingredients.items():
-                self._shopping_list.add_ingredient(ingredient, full_quantity[0], full_quantity[1])
+            # Add ingredients to the shopping list.
+            new_recipe.add_to(self._shopping_list)
 
             # Alert user that list was updated.
             self._list_display.addstr(self._list_height-2, 1, "{} fully loaded".format(filename))
@@ -102,9 +101,8 @@ class MainScreen:
         # Try to load list, and recursively call start_command if the file isn't loaded.
         try:
             new_list = Recipe.create_from_file(filename)
-            # Add every ingredient in recipe to the shopping list.
-            for ingredient, full_quantity in new_list._ingredients.items():
-                self._shopping_list.add_ingredient(ingredient, full_quantity[0], full_quantity[1])
+            # Add ingredients to the shopping list.
+            new_list.add_to(self._shopping_list)
 
             # Alert user that list was updated..
             line_y, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, len(filename)+13)

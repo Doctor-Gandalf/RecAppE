@@ -103,7 +103,7 @@ class Recipe:
     def clear(self):
         """Remove all ingredients from the recipe.
 
-        :return: a reference to self
+        :return: a reference to the recipe
         """
         self._ingredients = {}
         return self
@@ -117,6 +117,16 @@ class Recipe:
         for ingredient, full_quantity in self._ingredients.items():
             new_recipe.add_ingredient(ingredient, full_quantity[0], full_quantity[1])
         return new_recipe
+
+    def add_to(self, receiving_recipe):
+        """Add every ingredient in recipe to the shopping list.
+
+        :param receiving_recipe: the recipe to receive ingredients
+        :return: a reference to the receiving recipe
+        """
+        for ingredient, full_quantity in self._ingredients.items():
+            receiving_recipe.add_ingredient(ingredient, full_quantity[0], full_quantity[1])
+        return receiving_recipe
 
 if __name__ == "__main__":
     print("Demonstrating recipe.py\n")
