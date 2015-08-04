@@ -29,6 +29,31 @@ def app(stdscr):
     main_screen.start_shopping_list()
     main_screen.clear_screen()
 
+    main_screen.add_item("onions", 5, "whole")
+    main_screen.add_item("potatoes", 1, "cut")
+    main_screen.add_item("potatoe", 1, "cut")
+    main_screen.add_item("potatos", 1, "cut")
+    main_screen.add_item("potates", 1, "cut")
+    main_screen.add_item("potaoes", 1, "cut")
+    main_screen.add_item("pottoes", 1, "cut")
+    main_screen.add_item("poatoes", 1, "cut")
+    main_screen.add_item("ptatoes", 1, "cut")
+    main_screen.add_item("otatoes", 1, "cut")
+    main_screen.add_item("tatos", 1, "cut")
+    main_screen.add_item("potes", 1, "cut")
+    main_screen.add_item("pates", 1, "cut")
+    main_screen.add_item("potae", 1, "cut")
+    main_screen.add_item("potao", 1, "cut")
+    main_screen.add_item("potaes", 1, "cut")
+    main_screen.add_item("poto", 1, "cut")
+    main_screen.add_item("tatoes", 1, "cut")
+    main_screen.add_item("potoes", 1, "cut")
+    main_screen.add_item("atoes", 1, "cut")
+    main_screen.add_item("pttoes", 1, "cut")
+    main_screen.add_item("ptates", 1, "cut")
+
+    main_screen.show_list()
+
     stdscr.getkey()
 
 if __name__ == "__main__":

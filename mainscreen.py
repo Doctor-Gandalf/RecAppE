@@ -168,5 +168,21 @@ class MainScreen:
         return self
 
     def show_list(self):
+        count = 2
+        row = 0
 
-        pass
+        _, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, 14)
+        self._list_display.addstr(1, line_x, "Shopping list:")
+
+        for ingredient in self._shopping_list:
+            start_y = count
+            start_x = row*20+1
+
+            self._list_display.addstr(start_y, start_x, self._shopping_list.show_ingredient(ingredient))
+            count += 1
+
+            if count == self._list_height-1:
+                row += 1
+                count = 2
+
+        self._list_display.refresh()
