@@ -64,6 +64,47 @@ class MainScreen:
         self._shopping_list.add_ingredient(name, quantity, qualifier)
         return self
 
+    def get_item_info(self):
+        """Get the info for an item to add
+
+        :return: a tuple composed of the name, the quantity, and the qualifier (in order)
+        """
+        curses.echo()
+
+        # Request item name.
+        _, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, 20)
+        self._list_display.addstr(self._list_height-2, line_x, "Enter name of item: ")
+        self._list_display.refresh()
+
+        # Get item name.
+        item_name = self._list_display.getstr().decode(encoding="utf-8")
+
+        # Clear screen after item name.
+        self._list_display.addstr(self._list_height-2, 1, ' '*(self._list_width-2))
+
+        # Request item quantity.
+        _, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, 25)
+        self._list_display.addstr(self._list_height-2, line_x, "Enter quantity of item: ")
+        self._list_display.refresh()
+
+        # Get item qualifier.
+        item_quantity = int(self._list_display.getstr().decode(encoding="utf-8"))
+
+        # Clear screen after item quantity.
+        self._list_display.addstr(self._list_height-2, 1, ' '*(self._list_width-2))
+
+        # Request item qualifier.
+        _, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, 26)
+        self._list_display.addstr(self._list_height-2, line_x, "Enter qualifier of item: ")
+        self._list_display.refresh()
+
+        # Get item qualifier.
+        item_qualifier = self._list_display.getstr().decode(encoding="utf-8")
+
+        curses.noecho()
+
+        return item_name, item_quantity, item_qualifier
+
     def save_list(self, filename):
         """Save a copy of the shopping list for both user and computer use.
 
@@ -81,7 +122,7 @@ class MainScreen:
 
         return self
 
-    def load_list(self):
+    def start_load(self):
         """Loads a list from a file.
 
         :return: null
@@ -139,7 +180,7 @@ class MainScreen:
         """Start the main screen by getting a command from a key.
 
         Pressing 'q' will quit app.
-        :return: a reference to the recipe
+        :return: a reference to the main screen
         """
         key = self._list_display.getkey()
         if key == '\n':
@@ -147,7 +188,7 @@ class MainScreen:
             return self
         elif key == 'l':
             # Load a shopping list from saves.
-            self.load_list()
+            self.start_load()
             return self
         elif key == 'q':
             # quit app.
@@ -161,10 +202,16 @@ class MainScreen:
             self.start_shopping_list()
 
     def clear_screen(self):
-        """Clear the contents of the screen."""
+        """Clear the contents of the screen.
+
+        :return: a reference to the main screen
+        """
         self._list_display.clear()
+
+        # Add back border and show display
         util.color_box(self._list_display, 0, 0, self._list_height-1, self._list_width-1, 3)
         self._list_display.refresh()
+
         return self
 
     def show_list(self):
@@ -181,8 +228,36 @@ class MainScreen:
             self._list_display.addstr(start_y, start_x, self._shopping_list.show_ingredient(ingredient))
             count += 1
 
-            if count == self._list_height-1:
+            if count == self._list_height-2:
                 row += 1
                 count = 2
 
         self._list_display.refresh()
+
+    def do_command(self):
+        key = self._list_display.getkey()
+
+        self._list_display.addstr(self._list_height-2, 1, ' '*(self._list_width-2))
+        self._list_display.refresh()
+
+        if key == 'l':
+            pass
+        elif key == 'a':
+            try:
+                item_name, item_quantity, item_qualifier = self.get_item_info()
+                self.add_item(item_name, item_quantity, item_qualifier)
+            except ValueError:
+                self._list_display.addstr(self._list_height-2, 1, ' '*(self._list_width-2))
+                _, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, 18)
+                self._list_display.addstr(self._list_height-2, line_x, "Could not add item")
+                self._list_display.refresh()
+                self.do_command()
+        elif key == 'q':
+            exit()
+        elif key == 's':
+            pass
+        else:
+            _, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, 18)
+            self._list_display.addstr(self._list_height-2, line_x, "Command not found")
+            self._list_display.refresh()
+            self.do_command()

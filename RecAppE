@@ -27,7 +27,6 @@ def app(stdscr):
     main_screen = MainScreen(console_height, console_width)
     main_screen.show_intro()
     main_screen.start_shopping_list()
-    main_screen.clear_screen()
 
     main_screen.add_item("onions", 5, "whole")
     main_screen.add_item("potatoes", 1, "cut")
@@ -52,9 +51,10 @@ def app(stdscr):
     main_screen.add_item("pttoes", 1, "cut")
     main_screen.add_item("ptates", 1, "cut")
 
-    main_screen.show_list()
-
-    stdscr.getkey()
+    while True:
+        main_screen.clear_screen()
+        main_screen.show_list()
+        main_screen.do_command()
 
 if __name__ == "__main__":
     # curses.wrapper ensures that program will always fully exit from curses mode if an error occurs.
