@@ -47,6 +47,16 @@ class Recipe:
         except ValueError as e:
             raise e
 
+    def remove_ingredient(self, name):
+        """Remove ingredient from recipe.
+
+        :param name: the ingredient to remove
+        :return: a copy of the removed ingredient
+        """
+        item = (name, self.get_ingredient_quantity(name))
+        del self._ingredients[name]
+        return item
+
     def get_ingredient_quantity(self, name):
         """Get the quantity of an ingredient.
 

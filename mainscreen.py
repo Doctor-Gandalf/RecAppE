@@ -39,19 +39,13 @@ class MainScreen:
         # Add the directory name to the filename.
         filename = 'saved_recipes/' + filename
 
-        # Handle error in case file doesn't exist.
-        try:
-            new_recipe = Recipe.create_from_file(filename)
-            # Add ingredients to the shopping list.
-            new_recipe.add_to(self._shopping_list)
+        new_recipe = Recipe.create_from_file(filename)
+        # Add ingredients to the shopping list.
+        new_recipe.add_to(self._shopping_list)
 
-            # Alert user that list was updated.
-            self._list_display.addstr(self._list_height-2, 1, "{} fully loaded".format(filename))
-            self._list_display.refresh()
-        except FileNotFoundError:
-            # Alert user that file was not found.
-            self._list_display.addstr(self._list_height-2, 1, "File not found.")
-            self._list_display.refresh()
+        # Alert user that list was updated.
+        self._list_display.addstr(self._list_height-2, 1, "{} fully loaded".format(filename))
+        self._list_display.refresh()
 
     def add_item(self, name, quantity, qualifier):
         """Add a single item to the shopping list.
@@ -63,6 +57,14 @@ class MainScreen:
         """
         self._shopping_list.add_ingredient(name, quantity, qualifier)
         return self
+
+    def remove_item(self, name):
+        """Remove item from list.
+
+        :param name: the name of the item to be removed
+        :return: the removed item
+        """
+        return self._shopping_list.remove_ingredient(name)
 
     def request_element(self, request):
         """Ask for an element.
@@ -99,6 +101,21 @@ class MainScreen:
         # Save twice to allow reference later on.
         self._shopping_list.save_as_list(filename)
         self._shopping_list.save_to_file(data_name)
+
+        return self
+
+    def save_as_recipe(self, filename):
+        """Save a copy of the shopping list for both user and computer use.
+
+        Data will be saved to shopping_lists/data as json file and to shopping_lists as human-readable list.
+        :param filename: the name of the file to save
+        :return: a reference to the main screen
+        """
+        # Add appropriate directory name to save as recipe.
+        filename = 'saved_recipes/' + filename
+
+        # Save as a recipe.
+        self._shopping_list.save_to_file(filename)
 
         return self
 
@@ -237,8 +254,15 @@ class MainScreen:
 
         if key == 'l':
             # Load a recipe.
-            filename = self.request_element("Enter name of recipe to load: ")
-            self.add_recipe(filename)
+            try:
+                filename = self.request_element("Enter name of recipe to load: ")
+                self.add_recipe(filename)
+            except (FileNotFoundError, IsADirectoryError):
+                _, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, 18)
+                self._list_display.addstr(self._list_height-2, 1, ' '*(self._list_width-2))
+                self._list_display.addstr(self._list_height-2, line_x, "File not found")
+                self._list_display.refresh()
+                self.do_command()
         elif key == 'a':
             # Add an ingredient.
             try:
@@ -258,10 +282,16 @@ class MainScreen:
             exit()
         elif key == 's':
             # Save shopping list.
-            pass
+            filename = self.request_element("Enter name to save list as: ")
+            self.save_list(filename)
+        elif key == 'c':
+            # Save shopping list.
+            filename = self.request_element("Enter name to save recipe as: ")
+            self.save_as_recipe(filename)
         elif key == 'r':
             # Remove item.
-            pass
+            item_name = self.request_element("Enter item to remove: ")
+            self.remove_item(item_name)
         else:
             _, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, 18)
             self._list_display.addstr(self._list_height-2, line_x, "Command not found")
