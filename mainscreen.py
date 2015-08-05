@@ -315,19 +315,49 @@ class MainScreen:
             exit()
         elif key == 's':
             # Save shopping list.
-            filename = self.request_element("Enter name to save list as: ")
-            self.save_list(filename)
+            try:
+                filename = self.request_element("Enter name to save list as: ")
+                self.save_list(filename)
+            except IsADirectoryError:
+                # User didn't enter file, so tell the user and retry.
+                self._list_display.addstr(self._list_height-2, 1, ' '*(self._list_width-2))
+
+                _, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, 23)
+                self._list_display.addstr(self._list_height-2, line_x, "File unable to be saved")
+
+                self._list_display.refresh()
+                self.do_command()
         elif key == 'w':
             # Save shopping list as a recipe.
-            filename = self.request_element("Enter name to save recipe as: ")
-            self.save_as_recipe(filename)
+            try:
+                filename = self.request_element("Enter name to save recipe as: ")
+                self.save_as_recipe(filename)
+            except IsADirectoryError:
+                # User didn't enter file, so tell the user and retry.
+                self._list_display.addstr(self._list_height-2, 1, ' '*(self._list_width-2))
+
+                _, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, 23)
+                self._list_display.addstr(self._list_height-2, line_x, "File unable to be saved")
+
+                self._list_display.refresh()
+                self.do_command()
         elif key == 'c':
             # Clear the shopping list.
             self._shopping_list.clear()
         elif key == 'r':
             # Remove item.
-            item_name = self.request_element("Enter item to remove: ")
-            self.remove_item(item_name)
+            try:
+                item_name = self.request_element("Enter item to remove: ")
+                self.remove_item(item_name)
+            except ValueError:
+                # Item wasn't in list, so tell the user and retry.
+                self._list_display.addstr(self._list_height-2, 1, ' '*(self._list_width-2))
+
+                _, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, 15)
+                self._list_display.addstr(self._list_height-2, line_x, "Item not found")
+
+                self._list_display.refresh()
+                self.do_command()
         elif key == 'h':
             # Show help window
             self.help()
