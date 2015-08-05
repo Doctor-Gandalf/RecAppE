@@ -30,6 +30,11 @@ class MainScreen:
         self._list_display.bkgd(' ', curses.color_pair(1))
         util.color_box(self._list_display, 0, 0, self._list_height-1, self._list_width-1, 3)
 
+        # Initializes help window for use in pause().
+        help_height, help_width = 12, 50
+        help_y, help_x = util.center_start(console_height, console_width, help_height, help_width)
+        self.help_window = curses.newwin(help_height, help_width, help_y, help_x)
+
     def add_recipe(self, filename):
         """Load a recipe and add it to the shopping list.
 
@@ -246,9 +251,33 @@ class MainScreen:
 
         self._list_display.refresh()
 
-    def do_command(self):
+    def help(self):
+        """Show help window."""
+        self.help_window.bkgd(' ', curses.color_pair(0))
+
+        self.help_window.addstr(1, 19, "Help window")
+        self.help_window.addstr(3, 12, "To add an item, press 'a'")
+        self.help_window.addstr(4, 11, "To remove an item, press 'r'")
+        self.help_window.addstr(5, 11, "To load a recipe, press 'l'")
+        self.help_window.addstr(6, 10, "To save as a recipe, press 'w'")
+        self.help_window.addstr(7, 6, "To save as a shopping list, press 's'")
+        self.help_window.addstr(8, 12, "To clear the list, press 'c'")
+        self.help_window.addstr(9, 16, "To quit, press 'q'")
+        self.help_window.addstr(10, 3, "Otherwise, press 'h' to return to application")
+
+        self.help_window.refresh()
+
+        # Close if user hits 'h', otherwise do the command user asks.
+        key = self.help_window.getkey()
+        if key == 'h':
+            return
+        else:
+            self.do_command(key)
+
+    def do_command(self, key=None):
         """Execute a command based on key input."""
-        key = self._list_display.getkey()
+        if key is None:
+            key = self._list_display.getkey()
 
         # Clear line in case a previous command had written to it.
         self._list_display.addstr(self._list_height-2, 1, ' '*(self._list_width-2))
@@ -299,6 +328,9 @@ class MainScreen:
             # Remove item.
             item_name = self.request_element("Enter item to remove: ")
             self.remove_item(item_name)
+        elif key == 'h':
+            # Show help window
+            self.help()
         else:
             # Tell the user that the key was an invalid command.
             _, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, 18)
