@@ -284,10 +284,13 @@ class MainScreen:
             # Save shopping list.
             filename = self.request_element("Enter name to save list as: ")
             self.save_list(filename)
-        elif key == 'c':
+        elif key == 'w':
             # Save shopping list.
             filename = self.request_element("Enter name to save recipe as: ")
             self.save_as_recipe(filename)
+        elif key == 'c':
+            # Clear the shopping list.
+            self._shopping_list.clear()
         elif key == 'r':
             # Remove item.
             item_name = self.request_element("Enter item to remove: ")
