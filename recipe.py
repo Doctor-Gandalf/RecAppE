@@ -70,8 +70,10 @@ class Recipe:
 
     def show_ingredient(self, name):
         """Get an ingredient and show it as a string."""
-        return str(self.get_ingredient_quantity(name)[0]) + ' ' + \
-            str(self.get_ingredient_quantity(name)[1] + ' ' + str(name))
+        quantity, qualifier = self.get_ingredient_quantity(name)
+        ingredient = (str(quantity) + ' ' + qualifier + ' ' + name) if qualifier != '' \
+            else (str(quantity) + ' ' + name)
+        return ingredient
 
     def read_from_file(self, filename):
         """Read a file and load the recipe from it.
