@@ -247,8 +247,10 @@ class MainScreen:
         self._list_display.refresh()
 
     def do_command(self):
+        """Execute a command based on key input."""
         key = self._list_display.getkey()
 
+        # Clear line in case a previous command had written to it.
         self._list_display.addstr(self._list_height-2, 1, ' '*(self._list_width-2))
         self._list_display.refresh()
 
@@ -258,6 +260,7 @@ class MainScreen:
                 filename = self.request_element("Enter name of recipe to load: ")
                 self.add_recipe(filename)
             except (FileNotFoundError, IsADirectoryError):
+                # Alert user that recipe wasn't loaded.
                 _, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, 18)
                 self._list_display.addstr(self._list_height-2, 1, ' '*(self._list_width-2))
                 self._list_display.addstr(self._list_height-2, line_x, "File not found")
@@ -266,6 +269,7 @@ class MainScreen:
         elif key == 'a':
             # Add an ingredient.
             try:
+                # Pull data to add as a new ingredient.
                 item_name = self.request_element("Enter name of item: ")
                 item_quantity = int(self.request_element("Enter quantity of item: "))
                 item_qualifier = self.request_element("Enter qualifier of item: ")
@@ -285,7 +289,7 @@ class MainScreen:
             filename = self.request_element("Enter name to save list as: ")
             self.save_list(filename)
         elif key == 'w':
-            # Save shopping list.
+            # Save shopping list as a recipe.
             filename = self.request_element("Enter name to save recipe as: ")
             self.save_as_recipe(filename)
         elif key == 'c':
@@ -296,6 +300,7 @@ class MainScreen:
             item_name = self.request_element("Enter item to remove: ")
             self.remove_item(item_name)
         else:
+            # Tell the user that the key was an invalid command.
             _, line_x = util.center_start(self._list_height-2, self._list_width-2, 1, 18)
             self._list_display.addstr(self._list_height-2, line_x, "Command not found")
             self._list_display.refresh()
